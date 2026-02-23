@@ -366,10 +366,10 @@ class CI_Encryption {
 	 * Encrypt
 	 *
 	 * @param	string	$data	Input data
-	 * @param	array	$params	Input parameters
+	 * @param	array|null	$params	Input parameters
 	 * @return	string
 	 */
-	public function encrypt($data, array $params = NULL)
+	public function encrypt($data, $params = NULL)
 	{
 		if (($params = $this->_get_params($params)) === FALSE)
 		{
@@ -470,6 +470,11 @@ class CI_Encryption {
 	 */
 	protected function _openssl_encrypt($data, $params)
 	{
+		if ($data === NULL)
+		{
+			return NULL;
+		}
+
 		if (empty($params['handle']))
 		{
 			return FALSE;
@@ -501,10 +506,10 @@ class CI_Encryption {
 	 * Decrypt
 	 *
 	 * @param	string	$data	Encrypted data
-	 * @param	array	$params	Input parameters
+	 * @param	array|null	$params	Input parameters
 	 * @return	string
 	 */
-	public function decrypt($data, array $params = NULL)
+	public function decrypt($data, $params = NULL)
 	{
 		if (($params = $this->_get_params($params)) === FALSE)
 		{
@@ -626,6 +631,11 @@ class CI_Encryption {
 	 */
 	protected function _openssl_decrypt($data, $params)
 	{
+		if ($data === NULL)
+		{
+			return NULL;
+		}
+
 		if ($iv_size = openssl_cipher_iv_length($params['handle']))
 		{
 			$iv = self::substr($data, 0, $iv_size);

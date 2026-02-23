@@ -39,67 +39,47 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Application Controller Class
- *
- * This class object is the super class that every library in
- * CodeIgniter will be assigned to.
+ * CodeIgniter Email Helpers
  *
  * @package		CodeIgniter
- * @subpackage	Libraries
- * @category	Libraries
+ * @subpackage	Helpers
+ * @category	Helpers
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/userguide3/general/controllers.html
+ * @link		https://codeigniter.com/userguide3/helpers/email_helper.html
  */
-#[AllowDynamicProperties]
-class CI_Controller {
 
-	/**
-	 * Reference to the CI singleton
-	 *
-	 * @var	object
-	 */
-	private static $instance;
+// ------------------------------------------------------------------------
 
+if ( ! function_exists('valid_email'))
+{
 	/**
-	 * CI_Loader
+	 * Validate email address
 	 *
-	 * @var	CI_Loader
+	 * @deprecated	3.0.0	Use PHP's filter_var() instead
+	 * @param	string	$email
+	 * @return	bool
 	 */
-	public $load;
-
-	/**
-	 * Class constructor
-	 *
-	 * @return	void
-	 */
-	public function __construct()
+	function valid_email($email)
 	{
-		self::$instance =& $this;
-
-		// Assign all the class objects that were instantiated by the
-		// bootstrap file (CodeIgniter.php) to local class variables
-		// so that CI can run as one big super object.
-		foreach (is_loaded() as $var => $class)
-		{
-			$this->$var =& load_class($class);
-		}
-
-		$this->load =& load_class('Loader', 'core');
-		$this->load->initialize();
-		log_message('info', 'Controller Class Initialized');
+		return (bool) filter_var($email, FILTER_VALIDATE_EMAIL);
 	}
+}
 
-	// --------------------------------------------------------------------
+// ------------------------------------------------------------------------
 
+if ( ! function_exists('send_email'))
+{
 	/**
-	 * Get the CI singleton
+	 * Send an email
 	 *
-	 * @static
-	 * @return	object
+	 * @deprecated	3.0.0	Use PHP's mail() instead
+	 * @param	string	$recipient
+	 * @param	string	$subject
+	 * @param	string	$message
+	 * @return	bool
 	 */
-	public static function &get_instance()
+	function send_email($recipient, $subject, $message)
 	{
-		return self::$instance;
+		return mail($recipient, $subject, $message);
 	}
-
 }
